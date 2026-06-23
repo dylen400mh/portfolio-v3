@@ -1,0 +1,174 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* ---------------------------------------------------------------- *
+ * Theme tokens — single dark theme: near-black with a violet signal *
+ * accent. Muted + border derive from foreground.                    *
+ * ---------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+  --background: #08080a;
+  --foreground: #f4f4f6;
+  --accent: #917bff;
+  --accent-contrast: #0a0a0b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-muted: color-mix(in oklab, var(--foreground) 55%, transparent);
+  --color-border: color-mix(in oklab, var(--foreground) 12%, transparent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ---------------------------------------------------------------- *
+ * Base                                                              *
+ * ---------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  /* soft accent glow bleeding from the top */
+  background-image: radial-gradient(
+    55rem 32rem at 50% -8%,
+    color-mix(in oklab, var(--accent) 14%, transparent),
+    transparent 70%
+  );
+  background-attachment: fixed;
+}
+
+/* faint technical grid, masked to fade out toward the edges */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--foreground) 5%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--foreground) 5%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(circle at 50% 28%, #000, transparent 78%);
+  mask-image: radial-gradient(circle at 50% 28%, #000, transparent 78%);
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 30%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------- *
+ * Prose (blog post body). Plain selectors beat the typography       *
+ * plugin's zero-specificity :where() rules.                         *
+ * ---------------------------------------------------------------- */
+.prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-bullets: var(--color-muted);
+  --tw-prose-hr: var(--color-border);
+  --tw-prose-th-borders: var(--color-border);
+  --tw-prose-td-borders: var(--color-border);
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  letter-spacing: -0.02em;
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 40%, transparent);
+  transition: border-color 0.15s ease;
+}
+.prose a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* inline code */
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  font-weight: 500;
+  padding: 0.15em 0.4em;
+  border-radius: 0.35rem;
+  background: color-mix(in oklab, var(--foreground) 7%, transparent);
+}
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: none; /* drop the typography plugin's backtick quotes */
+}
+
+.prose blockquote {
+  font-style: normal;
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+  color: var(--color-muted);
+}
+
+/* ---------------------------------------------------------------- *
+ * Code blocks — rehype-pretty-code (Shiki)                          *
+ * ---------------------------------------------------------------- */
+[data-rehype-pretty-code-figure] {
+  position: relative;
+  margin: 1.5rem 0;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--foreground) 3%, transparent);
+}
+
+[data-rehype-pretty-code-figure] pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 1rem 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  background: transparent;
+}
+
+[data-rehype-pretty-code-figure] code {
+  display: grid; /* one row per line */
+  background: transparent;
+  font-family: var(--font-mono);
+}
+
+[data-rehype-pretty-code-figure] code [data-line] {
+  padding: 0 1.1rem;
+  border-left: 2px solid transparent;
+}
+
+/* optional ```ts title="file.ts" bar */
+[data-rehype-pretty-code-title] {
+  padding: 0.6rem 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+  border-bottom: 1px solid var(--color-border);
+  background: color-mix(in oklab, var(--foreground) 4%, transparent);
+}
+
