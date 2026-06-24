@@ -17,7 +17,7 @@ BenefitTrack runs a monthly browser automation against insurance carrier portals
 
 The obvious approach is a traditional scraper: find the login form, click the button by its CSS class, wait for a redirect, and parse the balances. That works right up until the portal changes its markup, at which point the scrape either crashes or, worse, succeeds against a page that no longer means what you think it does.
 
-To mitigate this we chose to build with [Stagehand](https://github.com/browserbasehq/stagehand), a browser automation framework from Browserbase that lets you describe what you want in plain language instead of hardcoding selectors.
+To mitigate this we chose to build with [Stagehand](https://github.com/browserbase/stagehand), a browser automation framework from Browserbase that lets you describe what you want in plain language instead of hardcoding selectors.
 
 ```ts
 // selector-based: breaks if the class name or DOM structure changes
