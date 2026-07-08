@@ -26,7 +26,7 @@ export default async function BlogIndex() {
           Writing
         </h1>
         <p className="text-muted mt-2">
-          Notes on what I build. The canonical home for everything I publish.
+          Notes on what I build.
         </p>
       </header>
 
